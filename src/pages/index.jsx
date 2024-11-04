@@ -8,31 +8,41 @@ function Index() {
 
   const hitungLuasPersegi = async () => {
     try {
-      const response = await fetch('http://23.23.13.38:8080/function/luas-persegi', {
+      const response = await fetch('/api1/function/luas-persegi', { // Using the proxy for this API
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rusuk: parseFloat(sisiPersegi) }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setHasilPersegi(`Luas Persegi: ${data.luas}`);
+      setHasilPersegi(`Luas Persegi: ${data.luas_persegi}`);
     } catch (error) {
       console.error('Error calculating area of the square:', error);
+      setHasilPersegi('Error calculating area of the square');
     }
   };
 
   const hitungLuasKubus = async () => {
     try {
-      const response = await fetch('http://54.175.180.134:8080/function/luas-permukaan-kubus', {
+      const response = await fetch('/api2/function/luas-permukaan-kubus', { // Direct call for this API
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rusuk: parseFloat(sisiKubus) }),
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
-      setHasilKubus(`Luas Permukaan Kubus: ${data.luasPermukaanKubus}`);
+      setHasilKubus(`Luas Permukaan Kubus: ${data.luas_permukaan_kubus}`);
     } catch (error) {
       console.error('Error calculating surface area of the cube:', error);
+      setHasilKubus('Error calculating surface area of the cube');
     }
   };
 
